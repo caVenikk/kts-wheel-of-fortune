@@ -4,8 +4,8 @@ admin:
   email: admin@admin.com
   password: admin
 bot:
-  token: group_token
-  group_id: 1
+  token: vk1.a.JJ5gbDvEDwMrGx54Zi01dMRWJgxD8dzXDtSnsA2y6_cbBH7pq5DOlt4qljywyrqczyTzybXZ2rKkOF3f0XW65xYPQ2B_tYPRe3Bwb_OIQuFG60TB6CD8_Ln9FqcsZmo52rUcMNes_35ft-WlQrCv0rFpFj9HXQhuTszciKdmI1mXy00_pVqbzW183G3m9hUpPah9PurAiO2GzyGHmdgpTQ
+  group_id: 218928416
 database:
   host: 0.0.0.0
   port: 5432

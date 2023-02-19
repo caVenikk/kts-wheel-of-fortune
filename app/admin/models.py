@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from hashlib import sha256
 from typing import Optional
 
+from sqlalchemy import Column, Integer, String
+
 from app.store.database.sqlalchemy_base import db
 
 
@@ -17,8 +19,21 @@ class Admin:
     @classmethod
     def from_session(cls, session: Optional[dict]) -> Optional["Admin"]:
         return cls(id=session["admin"]["id"], email=session["admin"]["email"])
+    
+    @classmethod
+    def from_orm(cls, admin: "AdminModel"):
+        if admin:
+            return cls(id=admin.id, email=admin.email, password=admin.password)
+        return None
 
 
 class AdminModel(db):
     __tablename__ = "admins"
-    pass
+
+    id = Column('id', Integer, primary_key=True, autoincrement=True)
+    email = Column('email', String, nullable=False)
+    password = Column('password', String, nullable=False)
+    
+    @classmethod
+    def from_dto(cls, admin: Admin) -> "AdminModel":
+        return cls(email=admin.email, password=admin.password)
