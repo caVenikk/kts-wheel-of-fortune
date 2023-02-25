@@ -1,3 +1,4 @@
+import json
 import random
 import typing
 from typing import Optional
@@ -75,12 +76,12 @@ class VkApiAccessor(BaseAccessor):
                     "act": "a_check",
                     "key": self.key,
                     "ts": self.ts,
-                    "wait": 30,
+                    "wait": 2,
                 },
             )
         ) as resp:
             data = await resp.json()
-            self.logger.info(data)
+            self.logger.info(json.dumps(data, indent=4))
             self.ts = data["ts"]
             raw_updates = data.get("updates", [])
             updates = []
@@ -89,13 +90,16 @@ class VkApiAccessor(BaseAccessor):
                     Update(
                         type=update["type"],
                         object=UpdateObject(
-                            id=update["object"]["id"],
-                            user_id=update["object"]["user_id"],
-                            body=update["object"]["body"],
+                            id=update["object"]["message"]["id"],
+                            from_id=update["object"]["message"]["from_id"],
+                            peer_id=update["object"]["message"]["peer_id"],
+                            text=update["object"]["message"]["text"],
+                            date=update["object"]["message"]["date"],
                         ),
                     )
                 )
-            await self.app.store.bots_manager.handle_updates(updates)
+            if updates:
+                await self.app.store.bots_manager.handle_updates(updates)
 
     async def send_message(self, message: Message) -> None:
         async with self.session.get(

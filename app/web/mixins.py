@@ -20,4 +20,5 @@ class AuthRequiredDecorator:
                 if not getattr(self.request, "admin", None):
                     raise HTTPUnauthorized
                 return await super()._iter()
+
         return AuthView

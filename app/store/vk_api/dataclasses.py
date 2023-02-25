@@ -4,8 +4,10 @@ from dataclasses import dataclass
 @dataclass
 class UpdateObject:
     id: int
-    user_id: int
-    body: str
+    from_id: int
+    peer_id: int
+    text: str
+    date: int
 
 
 @dataclass

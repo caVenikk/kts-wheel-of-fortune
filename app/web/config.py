@@ -30,7 +30,7 @@ class DatabaseConfig:
     port: int = 5432
     user: str = "postgres"
     password: str = "postgres"
-    database: str = "project"
+    database: str = "wheel_of_fortune"
 
     @property
     def url(self):
@@ -63,3 +63,9 @@ def setup_config(app: "Application", config_path: str):
         ),
         database=DatabaseConfig(**raw_config["database"]),
     )
+
+
+def get_database_config(config_path: str):
+    with open(config_path, "r") as f:
+        raw_config = yaml.safe_load(f)
+    return DatabaseConfig(**raw_config["database"])

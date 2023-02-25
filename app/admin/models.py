@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 from typing import Optional
 
-from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column
 
 from app.store.database.sqlalchemy_base import db
 
@@ -19,7 +19,7 @@ class Admin:
     @classmethod
     def from_session(cls, session: Optional[dict]) -> Optional["Admin"]:
         return cls(id=session["admin"]["id"], email=session["admin"]["email"])
-    
+
     @classmethod
     def from_orm(cls, admin: "AdminModel"):
         if admin:
@@ -30,10 +30,10 @@ class Admin:
 class AdminModel(db):
     __tablename__ = "admins"
 
-    id = Column('id', Integer, primary_key=True, autoincrement=True)
-    email = Column('email', String, nullable=False)
-    password = Column('password', String, nullable=False)
-    
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    email: Mapped[str]
+    password: Mapped[str]
+
     @classmethod
     def from_dto(cls, admin: Admin) -> "AdminModel":
         return cls(email=admin.email, password=admin.password)
