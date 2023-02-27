@@ -17,8 +17,11 @@ class Poller:
 
     async def stop(self):
         self.is_running = False
-        if self.poll_task:
-            await asyncio.wait_for(self.poll_task, timeout=1)
+        try:
+            if self.poll_task:
+                await asyncio.wait_for(self.poll_task, timeout=1)
+        except TimeoutError:
+            pass
 
     async def poll(self):
         while self.is_running:
