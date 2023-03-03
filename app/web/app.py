@@ -58,7 +58,7 @@ def setup_app(config_path: str) -> Application:
     setup_config(app, config_path)
     session_setup(app, EncryptedCookieStorage(app.config.session.key))
     setup_routes(app)
-    setup_aiohttp_apispec(app, title="Vk Wheel of Fortune Bot", url="/docs/json", swagger_path="/docs")
+    setup_aiohttp_apispec(app, title="Telegram Wheel of Fortune Bot", url="/docs/json", swagger_path="/docs")
     setup_middlewares(app)
     setup_store(app)
     return app

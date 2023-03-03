@@ -1,4 +1,4 @@
-from app.store.vk_api.dataclasses import Message, Update, UpdateObject
+from app.store.tg_api.dataclasses import VKMessage, VKUpdate, VKUpdateObject
 
 
 class TestHandleUpdates:
@@ -9,9 +9,9 @@ class TestHandleUpdates:
     async def test_new_message(self, store):
         await store.bots_manager.handle_updates(
             updates=[
-                Update(
+                VKUpdate(
                     type="message_new",
-                    object=UpdateObject(
+                    object=VKUpdateObject(
                         id=1,
                         user_id=1,
                         body="kek",
@@ -20,6 +20,6 @@ class TestHandleUpdates:
             ]
         )
         assert store.vk_api.send_message.call_count == 1
-        message: Message = store.vk_api.send_message.mock_calls[0].args[0]
+        message: VKMessage = store.vk_api.send_message.mock_calls[0].args[0]
         assert message.user_id == 1
         assert message.text

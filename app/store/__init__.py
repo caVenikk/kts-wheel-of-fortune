@@ -10,10 +10,10 @@ class Store:
     def __init__(self, app: "Application"):
         from app.store.bot.manager import BotManager
         from app.store.admin.accessor import AdminAccessor
-        from app.store.vk_api.accessor import VkApiAccessor
+        from app.store.tg_api.accessor import TelegramAccessor
 
         self.admins = AdminAccessor(app)
-        self.vk_api = VkApiAccessor(app)
+        self.tg_api = TelegramAccessor(app)
         self.bots_manager = BotManager(app)
 
 

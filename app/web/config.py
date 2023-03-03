@@ -19,9 +19,8 @@ class AdminConfig:
 
 
 @dataclass
-class BotConfig:
+class TelegramBotConfig:
     token: str
-    group_id: int
 
 
 @dataclass
@@ -41,7 +40,7 @@ class DatabaseConfig:
 class Config:
     admin: AdminConfig
     session: SessionConfig = None
-    bot: BotConfig = None
+    bot: TelegramBotConfig = None
     database: DatabaseConfig = None
 
 
@@ -57,9 +56,8 @@ def setup_config(app: "Application", config_path: str):
             email=raw_config["admin"]["email"],
             password=raw_config["admin"]["password"],
         ),
-        bot=BotConfig(
-            token=raw_config["bot"]["token"],
-            group_id=raw_config["bot"]["group_id"],
+        bot=TelegramBotConfig(
+            token=raw_config["telegram"]["bot_token"],
         ),
         database=DatabaseConfig(**raw_config["database"]),
     )

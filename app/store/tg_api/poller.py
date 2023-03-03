@@ -25,6 +25,6 @@ class Poller:
 
     async def poll(self):
         while self.is_running:
-            updates = await self.store.vk_api.poll()
-            if updates:
-                await self.store.bots_manager.handle_updates(updates)
+            tg_updates = await self.store.tg_api.poll()
+            # if updates:
+            #     await self.store.bots_manager.handle_updates(updates)
