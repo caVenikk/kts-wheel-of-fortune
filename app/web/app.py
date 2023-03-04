@@ -11,6 +11,7 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
 from app.admin.models import Admin
 from app.store import Store, setup_store
+from app.store.bot.handlers import setup_handlers
 from app.store.database.database import Database
 from app.web.config import Config, setup_config
 from app.web.logger import setup_logging
@@ -61,4 +62,5 @@ def setup_app(config_path: str) -> Application:
     setup_aiohttp_apispec(app, title="Telegram Wheel of Fortune Bot", url="/docs/json", swagger_path="/docs")
     setup_middlewares(app)
     setup_store(app)
+    setup_handlers(app)
     return app

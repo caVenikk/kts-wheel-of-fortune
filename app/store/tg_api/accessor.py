@@ -18,12 +18,16 @@ class TelegramAccessor(BaseAccessor):
         super().__init__(app, *args, **kwargs)
         self.session: Optional[ClientSession] = None
         self.poller: Optional[Poller] = None
-        self.base_url: str = kwargs["base_url"] if "base_url" in kwargs else "https://api.telegram.org/"
+        self.base_url: str = (
+            kwargs["base_url"] if "base_url" in kwargs else "https://api.telegram.org/"
+        )
         self.offset: int = 1
         self.limit: int = 100
         self.timeout: int = 2
         self.allowed_updates: list[str] = (
-            kwargs["allowed_updates"] if "allowed_updates" in kwargs else ["message", "callback_query"]
+            kwargs["allowed_updates"]
+            if "allowed_updates" in kwargs
+            else ["message", "callback_query"]
         )
 
     async def connect(self, app: "Application"):

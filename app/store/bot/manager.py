@@ -1,8 +1,13 @@
 import typing
 from logging import getLogger
 
-from app.store.tg_api.dataclasses import Update
-from app.store.tg_api.keyboards import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from app.store.tg_api.dataclasses import Update, Message
+from app.store.tg_api.keyboards import (
+    InlineKeyboardMarkup,
+    InlineKeyboardButton,
+    ReplyKeyboardMarkup,
+    KeyboardButton,
+)
 
 if typing.TYPE_CHECKING:
     from app.web.app import Application
@@ -12,13 +17,20 @@ class BotManager:
     def __init__(self, app: "Application"):
         self.app = app
         self.logger = getLogger("handler")
+        self.command_handlers = {}
 
     async def handle_updates(self, updates: list[dict]):
         for update in updates:
             # TODO: сделать разделение апдейтов
-            # match update:
-            #     case {"message": message, ""}
-            await self.test(update)
+            match update:
+                case {"message": {"text": text, "from": {"is_bot": False}} as data} if text.startswith("/"):
+                    data["from_"] = data["from"]
+                    await self.command_handlers[text](bot=self, message=Message.from_dict(**data))
+
+            # await self.test(update)
+
+    def register_command(self, command: str, handler: callable):
+        self.command_handlers[command] = handler
 
     async def test(self, update: dict):
         update_ = Update.from_dict(**update)
