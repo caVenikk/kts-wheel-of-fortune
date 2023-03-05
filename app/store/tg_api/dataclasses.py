@@ -54,47 +54,12 @@ class CallbackQuery:
     id: Optional[int] = None
 
     @classmethod
-    def from_dict(cls, from_: dict, message: dict, data: str, callback_query_id: int):
-        from_["id_"] = from_["id"]
+    def from_dict(cls, from_: dict, message: dict, data: str, id_: int, **_):
         message["from_"] = message["from"]
+        from_["id_"] = from_["id"]
         return cls(
             from_=User.from_dict(**from_),
             message=Message.from_dict(**message) if message else None,
             data=data,
-            id=callback_query_id,
-        )
-
-
-@dataclass
-class Update:
-    id: int
-    message: Optional[Message]
-    callback_query: Optional[CallbackQuery]
-
-    @classmethod
-    def from_dict(
-        cls,
-        update_id: int,
-        message: Optional[dict] = None,
-        callback_query: Optional[dict] = None,
-    ):
-        return cls(
-            id=update_id,
-            message=Message.from_dict(
-                message_id=message["message_id"],
-                from_=message["from"],
-                chat=message["chat"],
-                date=message["date"],
-                text=message["text"],
-            )
-            if message
-            else None,
-            callback_query=CallbackQuery.from_dict(
-                from_=callback_query["from"],
-                callback_query_id=callback_query["id"],
-                message=callback_query["message"],
-                data=callback_query["data"],
-            )
-            if callback_query
-            else None,
+            id=id_,
         )
