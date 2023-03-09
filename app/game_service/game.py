@@ -18,6 +18,5 @@ class Game:
     def from_orm(cls, game: GameModel):
         return cls(
             chat_id=game.chat_id,
-            players=deque([Player.from_orm(player) for player in game.players]),
             secret=Secret.from_orm(game.secret),
         )
