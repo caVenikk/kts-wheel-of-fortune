@@ -1,5 +1,6 @@
 import typing
 from hashlib import sha256
+from logging import getLogger
 
 from sqlalchemy import select
 
@@ -11,6 +12,10 @@ if typing.TYPE_CHECKING:
 
 
 class AdminAccessor(BaseAccessor):
+    def __init__(self, app: "Application", *args, **kwargs):
+        super().__init__(app, *args, **kwargs)
+        self.logger = getLogger("AdminAccessor")
+
     async def connect(self, app: "Application"):
         admin = AdminModel(
             email=self.app.config.admin.email, password=sha256(self.app.config.admin.password.encode()).hexdigest()

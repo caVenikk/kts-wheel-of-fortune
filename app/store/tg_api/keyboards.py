@@ -69,6 +69,14 @@ class InlineKeyboardButton:
     url: Optional[str] = None
     callback_data: Optional[str] = None
 
+    @classmethod
+    def from_dict(cls, button: dict):
+        return cls(
+            text=button["text"],
+            url=button["url"] if "url" in button else None,
+            callback_data=button["callback_data"] if "callback_data" in button else None,
+        )
+
     def to_dict(self):
         dict_ = {"text": self.text}
         if self.url:
@@ -90,6 +98,14 @@ class InlineKeyboardMarkup:
 
     def __repr__(self):
         return str(self.inline_keyboard)
+
+    @classmethod
+    def from_dict(cls, markup):
+        inline_keyboard = cls(row_width=max([len(row) for row in markup["inline_keyboard"]]))
+        for row in markup["inline_keyboard"]:
+            buttons = [InlineKeyboardButton.from_dict(button) for button in row]
+            inline_keyboard.add(*buttons)
+        return inline_keyboard
 
     def add(self, *args):
         row = []

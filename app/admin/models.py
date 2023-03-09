@@ -4,7 +4,7 @@ from typing import Optional
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.store.database.sqlalchemy_base import db
+from app.store.database.sqlalchemy_base import Base
 
 
 @dataclass
@@ -27,7 +27,7 @@ class Admin:
         return None
 
 
-class AdminModel(db):
+class AdminModel(Base):
     __tablename__ = "admins"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)

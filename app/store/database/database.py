@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.orm import declarative_base
 
-from app.store.database import db
+from app.store.database import Base
 
 if TYPE_CHECKING:
     from app.web.app import Application
@@ -21,7 +21,7 @@ class Database:
         self.session: Optional[async_sessionmaker] = None
 
     async def connect(self, *_: list, **__: dict) -> None:
-        self._db = db
+        self._db = Base
         self._engine = create_async_engine(
             f"postgresql+asyncpg://{self.app.config.database.url}",
             echo=True,

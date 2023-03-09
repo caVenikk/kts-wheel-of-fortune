@@ -1,6 +1,8 @@
 import typing
+from typing import Optional
 from logging import getLogger
 
+from app.game_service.game import Game
 from app.store.tg_api.dataclasses import Message, CallbackQuery
 
 if typing.TYPE_CHECKING:
@@ -11,6 +13,7 @@ class BotManager:
     def __init__(self, app: "Application"):
         self.app = app
         self.logger = getLogger("handler")
+        self.game: Optional[Game] = None
         self.command_handlers: dict[callable] = {}
         self.callback_query_handlers: dict[callable] = {}
 
@@ -18,9 +21,10 @@ class BotManager:
         for update in updates:
             match update:
                 case {"message": {"text": text, "from": {"is_bot": False}} as data} if text.startswith("/"):
+                    data["text"] = data["text"].replace(f"@{self.app.store.tg_api.bot_username}", "")
                     data["from_"] = data["from"]
-                    if text in self.command_handlers:
-                        await self.command_handlers[text](bot=self, message=Message.from_dict(**data))
+                    if data["text"] in self.command_handlers:
+                        await self.command_handlers[data["text"]](bot=self, message=Message.from_dict(**data))
                 case {"message": {"text": text, "from": {"is_bot": False}} as data}:
                     # Text handlers
                     pass
@@ -37,8 +41,6 @@ class BotManager:
             commands = [commands]
         for command in commands:
             self.command_handlers[command] = handler
-            # TODO: Исправить регистрацию команды в чате (с @username)
-            # self.command_handlers[f"{command}@{self.app.store.tg_api.bot_username}"] = handler
 
     def register_callback_query_handler(self, data: str, handler: callable):
         self.callback_query_handlers[data] = handler

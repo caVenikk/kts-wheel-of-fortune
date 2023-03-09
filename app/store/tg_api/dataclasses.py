@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from app.store.tg_api.keyboards import InlineKeyboardMarkup
+
 
 @dataclass
 class User:
@@ -33,9 +35,12 @@ class Message:
     id: Optional[int] = None
     from_: Optional[User] = None
     date: Optional[int] = None
+    reply_markup: Optional[InlineKeyboardMarkup] = None
 
     @classmethod
-    def from_dict(cls, message_id: int, from_: dict, chat: dict, date: int, text: str, **_):
+    def from_dict(
+        cls, message_id: int, from_: dict, chat: dict, date: int, text: str, reply_markup: dict | None = None, **_
+    ):
         from_["id_"] = from_["id"]
         return cls(
             id=message_id,
@@ -43,6 +48,7 @@ class Message:
             chat=Chat(id=chat["id"]),
             date=date,
             text=text,
+            reply_markup=InlineKeyboardMarkup.from_dict(reply_markup) if reply_markup else None,
         )
 
 

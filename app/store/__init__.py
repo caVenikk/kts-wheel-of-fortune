@@ -8,13 +8,15 @@ if typing.TYPE_CHECKING:
 
 class Store:
     def __init__(self, app: "Application"):
-        from app.store.bot.manager import BotManager
         from app.store.admin.accessor import AdminAccessor
+        from app.store.bot.manager import BotManager
+        from app.store.game.accessor import GameAccessor
         from app.store.tg_api.accessor import TelegramAccessor
 
         self.admins = AdminAccessor(app)
         self.tg_api = TelegramAccessor(app)
         self.bots_manager = BotManager(app)
+        self.games = GameAccessor(app)
 
 
 def setup_store(app: "Application"):

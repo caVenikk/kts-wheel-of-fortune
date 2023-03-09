@@ -1,1 +1,1 @@
-from .sqlalchemy_base import db
+from app.store.database.sqlalchemy_base import Base
